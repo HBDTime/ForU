@@ -70,7 +70,7 @@ function render(){
   ['mouseenter','touchstart','pointerdown','click'].forEach(ev=>no.addEventListener(ev,dodge,{passive:false}));
 }
 function win(){
-  document.querySelector('.card').innerHTML='<div class="emoji">🥰</div><h1>ว้าย ดีใจที่สุดเลย!</h1><p>ขอบคุณที่ตอบตกลงนะ ต่อจากนี้ไปเราจะดูแลเธอให้ดีที่สุดเลย 💞</p><div style="font-size:32px">💖💖💖</div>';
+  document.querySelector('.card').innerHTML='<div class="emoji">🥰</div><h1>เย้ ขอบคุณนะคุณแฟน</h1><p>ขอบคุณนะอุนๆ จากนี้จะอยู่ดูแลกันไปตลอดเลยนะ</p><div style="font-size:32px">💖💖💖</div>';
   $('no')&&$('no').remove();
   for(let k=0;k<60;k++)setTimeout(()=>heart(),k*60);
 }
