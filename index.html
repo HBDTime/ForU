@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ถึงอุน 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#ffe3ee;--bg2:#ffd0e0;--card:#fffafc;--text:#7a3350;--sub:#a35a77;--pink:#ff6b9d;--pink2:#ff8fb7;--shadow:rgba(255,107,157,.3);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2b1220;--bg2:#3a1630;--card:#3d1c30;--text:#ffd6e6;--sub:#e6a3bf;--shadow:rgba(255,107,157,.25)}}
+:root[data-theme="dark"]{--bg1:#2b1220;--bg2:#3a1630;--card:#3d1c30;--text:#ffd6e6;--sub:#e6a3bf;--shadow:rgba(255,107,157,.25)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Mali','Sarabun','Noto Sans Thai',sans-serif;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--text);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.heart{position:fixed;bottom:-40px;font-size:24px;opacity:.6;animation:up linear forwards;pointer-events:none}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.card{background:var(--card);border-radius:28px;padding:36px 28px;width:min(92vw,420px);text-align:center;box-shadow:0 12px 40px var(--shadow);position:relative;z-index:2}
+.emoji{font-size:64px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) scale(1.06)}}
+h1{font-size:24px;margin:12px 0 8px}
+p{color:var(--sub);font-size:16px;line-height:1.7;margin:0 0 24px;min-height:56px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:8px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--pink2);opacity:.3}
+.dots i.on{opacity:1}
+.btns{display:flex;gap:14px;justify-content:center;align-items:center;min-height:56px}
+button{font-family:inherit;font-size:18px;border:0;border-radius:999px;padding:12px 28px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--pink),var(--pink2));box-shadow:0 6px 16px var(--shadow);transition:transform .15s}
+button:hover{transform:scale(1.06)}
+#no{background:#b9a3ae;box-shadow:none}
+#no.run{position:fixed;z-index:5;transition:left .25s,top .25s}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="dots" id="dots"></div>
+  <div class="emoji" id="emoji">🐻</div>
+  <h1 id="title"></h1>
+  <p id="msg"></p>
+  <div class="btns" id="btns"></div>
+</div>
+<script>
+const steps=[
+ {e:'😊',t:'สวัสดีอุนตี้ย้าก',m:'วันนี้เป็นวันที่ดีเลยนะ เก๊ามีเรื่องจะบอกแหละ'},
+ {e:'🌸',t:'เรื่องแรก',m:'ตั้งแต่รู้จักกันมีเรื่องต่างๆมากมายเลยนะ แม้เราจะห่างหายไป ก็ยังกลับมาเจอกันอีก ในอีกเวอร์ชั่น อีกความสัมพันธ์ ขอบคุณทุกๆสิ่งที่ทำให้เราสองคนมาถึงจุดนี้นะ'},
+ {e:'📷',t:'เรื่องที่สอง',m:'เพราะมีอุนเข้ามาในชีวิต เค้าได้ลองอะไรใหม่ๆเยอะเลย ได้กินของที่ไม่เคย ได้เที่ยวที่ใหม่ๆ ได้ทำงานแรก ได้ไปติ่งวงที่ชอบ ได้ดูหนังด้วยกัน ได้ใช้ชีวิตด้วยกัน เพราะอุนเลยที่เข้ามาเปลี่ยนชีวิตเค้าขนาดนี้'},
+ {e:'💌',t:'เรื่องสุดท้าย',m:'เค้าอยากใช้ชีวิตกับอุน อยากดูแลและอยู่ข้างๆอุนในทุกวันไม่ว่าจะดีหรือร้าย จะเป็นคนที่อุนหันมาก็เจอและคอยอยู่ข้างๆเสมอนะ'},
+ {e:'🥺',t:'เป็นแฟนกับเค้านะอุนๆ',m:'ตอบดีๆ นะ 💕',last:true}
+];
+let i=0,tries=0;
+const $=id=>document.getElementById(id);
+function render(){
+  const s=steps[i];
+  $('emoji').textContent=s.e;$('title').textContent=s.t;$('msg').textContent=s.m;
+  $('dots').innerHTML=steps.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('');
+  const b=$('btns');
+  if(!s.last){b.innerHTML='<button id="next">ไปต่อ ➜</button>';$('next').onclick=()=>{i++;render()};return}
+  b.innerHTML='<button id="yes">เป็น 💖</button><button id="no">ไม่เป็น</button>';
+  $('yes').onclick=win;
+  const no=$('no');
+  const dodge=e=>{
+    e.preventDefault();tries++;
+    no.classList.add('run');
+    const w=innerWidth-no.offsetWidth-16,h=innerHeight-no.offsetHeight-16;
+    no.style.left=(8+Math.random()*w)+'px';no.style.top=(8+Math.random()*h)+'px';
+    $('yes').style.transform='scale('+Math.min(1+tries*.12,2.2)+')';
+    const t=['ไม่ให้กดหรอก 😜','พลาดแล้ว~','กดเป็นเถอะนะ 🥺','หนีไปเรื่อยๆ นะ','ลองใหม่อีกที!'];
+    $('msg').textContent=t[tries%t.length];
+  };
+  ['mouseenter','touchstart','pointerdown','click'].forEach(ev=>no.addEventListener(ev,dodge,{passive:false}));
+}
+function win(){
+  document.querySelector('.card').innerHTML='<div class="emoji">🥰</div><h1>ว้าย ดีใจที่สุดเลย!</h1><p>ขอบคุณที่ตอบตกลงนะ ต่อจากนี้ไปเราจะดูแลเธอให้ดีที่สุดเลย 💞</p><div style="font-size:32px">💖💖💖</div>';
+  $('no')&&$('no').remove();
+  for(let k=0;k<60;k++)setTimeout(()=>heart(),k*60);
+}
+function heart(){
+  const h=document.createElement('div');h.className='heart';
+  h.textContent=['💖','💕','💗','🌸','💘'][Math.random()*5|0];
+  h.style.left=Math.random()*100+'vw';h.style.fontSize=(18+Math.random()*28)+'px';
+  h.style.animationDuration=(3+Math.random()*3)+'s';
+  document.body.appendChild(h);setTimeout(()=>h.remove(),6500);
+}
+setInterval(()=>{if(i<steps.length-1)heart()},1800);
+render();
+</script>
+</body>
+</html>
